@@ -1,0 +1,19 @@
+# python environment
+.venv
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# jupyter notebooks
+**/.ipynb_checkpoints
+
+# mlflow
+**/mlruns
+**/*.db
+
+# artifacts
+**/data
+**/models
+

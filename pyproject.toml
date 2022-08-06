@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "mlops-capstone-project"
+version = "0.1.0"
+description = "Capstone project for Data Talks Clubs' MLOps Zoomcamp"
+authors = ["Irem Erturk <irem.erturk@xxx.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.11"
+jupyter = "^1.0.0"
+pandas = "^1.4.2"
+mlflow = "^1.26.0"
+scikit-learn = "^1.1.1"
+seaborn = "^0.11.2"
+hyperopt = "^0.2.7"
+xgboost = "^1.6.1"
+fastparquet = "^0.8.1"
+boto3 = "^1.23.8"
+protobuf = "~3.19.0"
+pyarrow = "^8.0.0"
+prefect = {version = "2.0b5", allow-prereleases = true}
+
+[tool.poetry.dev-dependencies]
+johnnydep = "^1.13"
+greenlet = "^1.1.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+default_section = "THIRDPARTY"
+profile = "black"
+sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
