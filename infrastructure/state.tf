@@ -49,7 +49,7 @@ resource "aws_s3_bucket_public_access_block" "block" {
 }
 
 
-# DynamoDB table lock, will be used to prevent two team members 
+# DynamoDB table lock, will be used to prevent two team members
 # from writing to the state file at the same time by table lock
 resource "aws_dynamodb_table" "terraform-state" {
     name           = local.dynamodb-state-lock-table

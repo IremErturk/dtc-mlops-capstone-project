@@ -10,7 +10,7 @@ Prerequisite Manual Steps:
 Enable the access_key_id and secret_access_key in your terminal and run terraform commands on the terminal as follows.
 
 Caution::: The creation of AWS resources requires resource creations in two different step.
-- Step 1: Create AWS S3 bucket and corresponding resources to setup bucket versioning, encryprition, etc. Use the `bb17213` hash code of 
+- Step 1: Create AWS S3 bucket and corresponding resources to setup bucket versioning, encryprition, etc. Use the `bb17213` hash code of
 - Step 2: Create remaining resources and also set-up the s3 as terraform backend.
 
 
@@ -19,14 +19,14 @@ export AWS_SECRET_ACCESS_KEY = xxxx
 export AWS_ACCESS_KEY_ID = xxxx
 ```
 
-```bash 
-# Initialize the terraform 
+```bash
+# Initialize the terraform
 terraform init
 
 # Plan AWS resource creations (optional)
 terraform plan
 
-# Create AWS resources 
+# Create AWS resources
 terraform apply
 
 # Destroy all created resources (optional)

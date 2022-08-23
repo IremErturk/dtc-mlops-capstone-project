@@ -1,7 +1,7 @@
 terraform {
     backend "s3" {
         bucket         = "mlops-zoomcamp-capstone-terraform-state" # local.state-bucket-name
-        key            = "state/terraform.tfstate" 
+        key            = "state/terraform.tfstate"
         region         = "eu-central-1" # var.region
         encrypt        = true
         kms_key_id     = "alias/terraform-bucket-key" #local.state-bucket-kms-alias
