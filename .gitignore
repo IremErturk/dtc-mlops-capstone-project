@@ -13,6 +13,9 @@ __pycache__/
 **/mlruns
 **/*.db
 
+# .env
+**/.env
+
 # artifacts
 **/data
 **/models
