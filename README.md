@@ -45,18 +45,3 @@ Pre-Commit allows to run hooks on every commit automatically to point out issues
     ```bash
         pre-commit run --all-files
     ```
-
-
-### Setting Up Infrastructure
-- Create AWS account and follow best practices for for root IAM user (such as MFA enabling, no active access keys)
-- Create User with specific Administratoraccess rights ..
-- Install Terraform check the [official documentation](https://www.terraform.io/downloads) 
-
-### AWS best Practices
-
-
-
-
-Best IAM practices for secure AWS accounts
-- MFA should be enabled on the Root user IAM
-- Root user has no active access keys
