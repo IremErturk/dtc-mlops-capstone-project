@@ -17,7 +17,7 @@ source ./.venv/bin/activate
 ```
 
 2. Environment Variables
-- Create `.env` file inside the `workflow-orchestration` module. 
+- Create `.env` file inside the `workflow-orchestration` module.
 - Add `KAGGLE_USERNAME` and `KAGGLE_KEY` values to the `.env` file. Follow [instructions](https://www.kaggle.com/general/51898) here to find kaggle username, and kaggle key values.
 
 

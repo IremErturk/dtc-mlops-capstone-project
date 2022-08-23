@@ -3,7 +3,7 @@
 
 * Problem description
     * 0 points: Problem is not described
-    * 1 point: Problem is described but shortly or not clearly 
+    * 1 point: Problem is described but shortly or not clearly
     * [g] 2 points: Problem is well described and it's clear what the problem the project solves
 * Cloud
     * 0 points: Cloud is not used, things run only locally
