@@ -6,6 +6,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# terraform
+**/.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+
 # jupyter notebooks
 **/.ipynb_checkpoints
 
