@@ -30,6 +30,10 @@ def save_to_cloud():
 
 @flow(name="datalake_flow", description="", task_runner=SequentialTaskRunner)
 def datalake_flow():
+    """
+    Datalake flow ensures that poemsdataset is being retrieved from Kaggle
+    and stored in an accessible storage (local filesystem, aws bucket) for the next flow definitions.
+    """
     shell_run_command(
         command=f"kaggle datasets download {KAGGLE_DATASET_OWNER}/{KAGGLE_DATASET_NAME} --path {OUTPUT_PATH}",
         return_all=True,
