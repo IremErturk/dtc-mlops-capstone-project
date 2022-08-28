@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "capstone-model-serving"
+version = "0.1.0"
+description = "MLOps Zoomcamp Capstone Model Serving Module with FastAPI"
+authors = ["Irem Erturk <irem.erturk@xxx.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.11"
+pandas = "^1.4.2"
+uvicorn = "^0.18.3"
+fastapi = "^0.81.0"
+
+[tool.poetry.dev-dependencies]
+python-dotenv = "^0.20.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+default_section = "THIRDPARTY"
+profile = "black"
+sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
