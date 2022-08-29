@@ -1,27 +1,20 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# GitHub recommends pinning actions to a commit SHA.
-# To get a newer version, you will need to update the SHA.
-# You can also reference a tag or branch, but the action may change without warning.
-
-name: Deploy to Amazon ECS
+name: Build & Deploy FastAPI Model Serving to Amazon ECS
 
 on:
   push:
+    paths:
+      - model_serving/web_service/*
     branches:
       - main
 
 env:
   AWS_REGION: eu-central-1
   ECR_REPOSITORY: fastapi-app
-  ECS_SERVICE: fastapi-app   # set this to your Amazon ECS service name
-  ECS_CLUSTER: mlops-zoomcamp-capstone  # set this to your Amazon ECS cluster name
-  CONTAINER_NAME: fastapi-app # set this to the name of the container in the
-                              # containerDefinitions section of your task definition
-  DOCKER_PATH: ./deployment/web_service/
+  DOCKER_PATH: ./model_serving/web_service/
+  # ECS_SERVICE: fastapi-app   # set this to your Amazon ECS service name
+  # ECS_CLUSTER: mlops-zoomcamp-capstone  # set this to your Amazon ECS cluster name
+  # CONTAINER_NAME: fastapi-app # set this to the name of the container in the
+  #                             # containerDefinitions section of your task definition
 
 jobs:
   deploy:
@@ -42,7 +35,7 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@aaf69d68aa3fb14c1d5a6be9ac61fe15b48453a2
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image

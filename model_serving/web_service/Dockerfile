@@ -8,9 +8,7 @@ RUN apt-get update && \
 RUN python -m pip install --upgrade pip
 
 RUN mkdir -p /opt/web_service/repo
-# RUN mkdir -p /opt/web_service/repo/data
 
-# COPY executable code and the neccessary data
 COPY fastapi_app.py /opt/web_service/repo/
 COPY pyproject.toml poetry.toml poetry.lock /opt/web_service/repo/
 
@@ -28,7 +26,6 @@ ENV PATH=/opt/web_service/repo/.venv/bin:$PATH
 ENV PYTHONUNBUFFERED 1
 WORKDIR /opt/web_service/repo
 
-# Make port 8000 available to the world outside this container
 EXPOSE 8000
 
 CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "fastapi_app:app"]
