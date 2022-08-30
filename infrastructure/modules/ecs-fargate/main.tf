@@ -3,7 +3,7 @@ resource "aws_ecr_repository" "repository" {
   for_each = { for each in var.service-configs : each.name => each }
   name = each.value.name
   force_delete = true
-  image_tag_mutability = "IMMUTABLE"
+  image_tag_mutability = "MUTABLE" #using latest tag therefore required.
 
   image_scanning_configuration {
     scan_on_push = true
