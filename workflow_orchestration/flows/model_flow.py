@@ -94,19 +94,3 @@ def model_flow():
 
 
 model_flow()
-
-
-# def create_poem(baseline:str, learn_path:str="/models/gtp2-learn.pkl"):
-
-#     pretrained_weights = 'gpt2'
-#     tokenizer = GPT2TokenizerFast.from_pretrained(pretrained_weights)
-#     baseline_ids = tokenizer.encode(baseline)
-#     inp = tensor(baseline_ids)[None]
-
-#     learn = Learner.load_learner(file=learn_path)
-#     preds = learn.model.generate(inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True)
-#     return tokenizer.decode(preds[0].numpy(), skip_special_tokens=True)
-
-
-# create_poem(baseline="I don't know what I would do")
-# create_poem(baseline="love is ridiculous")

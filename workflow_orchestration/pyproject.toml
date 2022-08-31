@@ -17,6 +17,7 @@ fastai = "^2.7.9"
 torch = "^1.12.1"
 torchvision = "^0.13.1"
 mlflow = "^1.28.0"
+s3fs = "^2022.8.0"
 
 [tool.poetry.dev-dependencies]
 python-dotenv = "^0.20.0"

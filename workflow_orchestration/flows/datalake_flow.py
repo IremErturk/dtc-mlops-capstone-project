@@ -22,12 +22,6 @@ def unzip_dataset():
     return True
 
 
-@task
-def save_to_cloud():
-    # TODO: Upload dataset-files to AWS s3 buckect
-    pass
-
-
 @flow(name="datalake_flow", description="", task_runner=SequentialTaskRunner)
 def datalake_flow():
     """
