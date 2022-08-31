@@ -209,7 +209,7 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           name: ${{ env.PROJECT }}
-          template: infrastructure/ecs_cluster_prefect_agent.yml # TODO: required infrastructure can be created with terraform directly
+          template: infrastructure/templates/ecs_cluster_prefect_agent.yml # TODO: required infrastructure can be created with terraform directly
           capabilities: CAPABILITY_NAMED_IAM
           parameter-overrides: "cpu=${{ github.event.inputs.cpu }},memory=${{ github.event.inputs.memory }},project=${{ env.PROJECT }},cluster=${{ env.ECS_CLUSTER }},image=${{ steps.build-image.outputs.image }},awsaccountid=${{steps.aws.outputs.account_id}},region=${{ env.AWS_REGION }}"
 
