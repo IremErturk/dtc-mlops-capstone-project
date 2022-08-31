@@ -29,7 +29,7 @@ on:
 env:
   AWS_REGION: eu-central-1
   ECR_REPOSITORY: prefect-agent
-  DOCKER_PATH: ./model_serving/workflow-orchestration/
+  DOCKER_PATH: ./workflow-orchestration/
   ECS_CLUSTER: mlops-zoomcamp-capstone
   PROJECT: prefect-agent
   PREFECT_VERSION: 2.1.1
@@ -62,7 +62,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Build S3 block
         id: s3
@@ -122,7 +122,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy flows to S3
         id: build
@@ -211,7 +211,7 @@ jobs:
           name: ${{ env.PROJECT }}
           template: infrastructure/ecs_cluster_prefect_agent.yml # TODO: required infrastructure can be created with terraform directly
           capabilities: CAPABILITY_NAMED_IAM
-          parameter-overrides: "cpu=${{ github.event.inputs.cpu }},memory=${{ github.event.inputs.memory }},project=${{ env.PROJECT }},cluster=${{ env.ECS_CLUSTER }},image=${{ steps.build-image.outputs.image }},awsaccountid=${{steps.aws.outputs.account_id}},region=${{ secrets.AWS_DEFAULT_REGION }}"
+          parameter-overrides: "cpu=${{ github.event.inputs.cpu }},memory=${{ github.event.inputs.memory }},project=${{ env.PROJECT }},cluster=${{ env.ECS_CLUSTER }},image=${{ steps.build-image.outputs.image }},awsaccountid=${{steps.aws.outputs.account_id}},region=${{ env.AWS_REGION }}"
 
       - name: ECS Service Deployment finished
         run: echo "ECS Service Deployment finished at $(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_STEP_SUMMARY
