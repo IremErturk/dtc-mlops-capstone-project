@@ -106,9 +106,10 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           export PATH=$PATH:$HOME/.local/bin
+          poetry --version
 
       - name: Python dependencies
-        working-directory: workflow-orchestration
+        working-directory: workflow_orchestration
         run: |
           poetry install --no-dev
 
