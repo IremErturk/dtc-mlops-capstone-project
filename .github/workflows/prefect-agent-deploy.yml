@@ -107,11 +107,14 @@ jobs:
           curl -sSL https://install.python-poetry.org | python3 -
           export PATH=$PATH:$HOME/.local/bin
           poetry --version
+    
+      - name: Add poetry to PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Python dependencies
         working-directory: workflow_orchestration
         run: |
-          poetry install --no-dev
+          poetry install --only main
 
       - name: Prefect Cloud login
         run: |
