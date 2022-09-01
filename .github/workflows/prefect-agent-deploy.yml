@@ -114,7 +114,7 @@ jobs:
       - name: Python dependencies
         # working-directory: workflow_orchestration
         run: |
-          cd deployer workflow_orchestration
+          cd workflow_orchestration
           poetry install --only main
           source ./.venv/bin/activate
           prefect --help
