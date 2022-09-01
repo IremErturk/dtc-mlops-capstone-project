@@ -85,7 +85,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - id: set-matrix
-        run: echo "::set-output name=matrix::$(ls workflow_orchestration/flows/*.py | jq -R -s -c 'split("\n")[:-1]')"
+        working-directory: workflow_orchestration
+        run: echo "::set-output name=matrix::$(ls flows/*.py | jq -R -s -c 'split("\n")[:-1]')"
 
   deploy:
     needs: list-flows
@@ -136,8 +137,6 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          echo $basename
-          echo $FLOW_NAME
           poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name cicd -q ${{ env.PROJECT }} -sb s3/prod -v $GITHUB_SHA -o $FLOW_NAME.yaml
           poetry run prefect deployment apply $FLOW_NAME.yaml
           echo ::set-output name=flow_manifest::$FLOW_NAME.yaml
