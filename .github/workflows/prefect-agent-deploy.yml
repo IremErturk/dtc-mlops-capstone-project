@@ -112,10 +112,12 @@ jobs:
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Python dependencies
-        working-directory: workflow_orchestration
+        # working-directory: workflow_orchestration
         run: |
+          cd deployer workflow_orchestration
           poetry install --only main
-          source ./.venv/bin/activate 
+          source ./.venv/bin/activate
+          prefect --help
 
       - name: Prefect Cloud login
         run: |
