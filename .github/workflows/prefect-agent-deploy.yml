@@ -115,6 +115,7 @@ jobs:
         working-directory: workflow_orchestration
         run: |
           poetry install --only main
+          source ./.venv/bin/activate 
 
       - name: Prefect Cloud login
         run: |
