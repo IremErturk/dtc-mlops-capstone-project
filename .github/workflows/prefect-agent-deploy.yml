@@ -136,6 +136,8 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
+          echo $basename
+          echo $FLOW_NAME
           poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name cicd -q ${{ env.PROJECT }} -sb s3/prod -v $GITHUB_SHA -o $FLOW_NAME.yaml
           poetry run prefect deployment apply $FLOW_NAME.yaml
           echo ::set-output name=flow_manifest::$FLOW_NAME.yaml
