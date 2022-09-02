@@ -43,7 +43,7 @@ resource "aws_ecs_service" "service" {
   }
 
   network_configuration {
-    subnets          = var.default-azs
+    subnets          = var.default_azs
     assign_public_ip = true # Providing our containers with public IPs
     security_groups  = ["${aws_security_group.service_security_group.id}"]
   }

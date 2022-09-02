@@ -5,7 +5,7 @@ locals{
     state-bucket-kms-alias = "alias/terraform-bucket-key"
     dynamodb-state-lock-table="terraform-state"
 
-    default-azs = [ aws_default_subnet.default_subnet_a.id,
+    default_azs = [ aws_default_subnet.default_subnet_a.id,
                     aws_default_subnet.default_subnet_b.id,
                     aws_default_subnet.default_subnet_c.id ]
 
@@ -18,6 +18,22 @@ locals{
                           task_cpu = 256,
                           svc_desired_count = 2
                         }
+
+    svc-experiment-tracking = { name = "mlflow-server",
+                                host_port = 5000,
+                                container_port = 5000,
+                                task_memory = 512,
+                                task_cpu = 256,
+                                svc_desired_count = 1
+                              }
+
+    /* svc-workflow_orchestration = { name = "prefect-agent",
+                          host_port = 8000,
+                          container_port = 8000,
+                          task_memory = 512,
+                          task_cpu = 256,
+                          svc_desired_count = 2
+                        } */
 }
 
 

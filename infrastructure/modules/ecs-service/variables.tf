@@ -16,6 +16,6 @@ variable "service-config" {
     })
 }
 
-variable "default-azs" {
+variable "default_azs" {
   type = list(string)
 }

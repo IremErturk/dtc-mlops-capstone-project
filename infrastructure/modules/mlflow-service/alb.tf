@@ -1,19 +1,20 @@
-data "aws_vpc" "default" {
-  default = true
+data "aws_vpc" "vpc" {
+  id = local.vpc_id
 }
 
 # Application Load Balancer infront of each
 resource "aws_alb" "application_load_balancer" {
   name               = "${var.service-config.name}-lb"
   load_balancer_type = "application"
-  subnets            = var.default_azs
+  subnets            = [for subnet in aws_subnet.mlflow_public_subnet : subnet.id]
   security_groups    = ["${aws_security_group.load_balancer_security_group.id}"]
+
 }
 
 # Load Balancer Security Group
 resource "aws_security_group" "load_balancer_security_group" {
     name            = "${var.service-config.name}-sg"
-
+    vpc_id          = local.vpc_id
     # Configuration for incoming trafic
     ingress {
         from_port   = 80            # Allowing traffic in from port 80, HTTP requests
@@ -36,7 +37,7 @@ resource "aws_lb_target_group" "target_group" {
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = "${data.aws_vpc.default.id}" # Referencing the default VPC
+  vpc_id      = local.vpc_id
   health_check {
     matcher = "200,301,302"
     path = "/"
