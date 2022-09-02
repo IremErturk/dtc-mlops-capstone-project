@@ -4,7 +4,7 @@ data "aws_vpc" "vpc" {
 
 # Application Load Balancer infront of each
 resource "aws_alb" "application_load_balancer" {
-  name               = "${var.service-config.name}-lb"
+  name               = "${var.service_config.name}-lb"
   load_balancer_type = "application"
   subnets            = [for subnet in aws_subnet.mlflow_public_subnet : subnet.id]
   security_groups    = ["${aws_security_group.load_balancer_security_group.id}"]
@@ -13,7 +13,7 @@ resource "aws_alb" "application_load_balancer" {
 
 # Load Balancer Security Group
 resource "aws_security_group" "load_balancer_security_group" {
-    name            = "${var.service-config.name}-sg"
+    name            = "${var.service_config.name}-lb-sg"
     vpc_id          = local.vpc_id
     # Configuration for incoming trafic
     ingress {
@@ -33,7 +33,7 @@ resource "aws_security_group" "load_balancer_security_group" {
 }
 
 resource "aws_lb_target_group" "target_group" {
-  name        = "${var.service-config.name}-tg"
+  name        = "${var.service_config.name}-tg"
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"

@@ -34,12 +34,12 @@ locals {
 }
 
 
-variable "cluster-id"{
+variable "cluster_id"{
     description = "AWS ECS Cluster ID"
     type        = string
 }
 
-variable "service-config" {
+variable "service_config" {
   description = "ECS task & service configurations"
   type = object({
     name                = string
@@ -100,7 +100,7 @@ variable "db_skip_final_snapshot" {
 
 variable "db_deletion_protection" {
   type        = bool
-  default     = true
+  default     = false
   description = "(Optional) If true, this module will not delete the database after terminating."
 }
 

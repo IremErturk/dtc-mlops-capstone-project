@@ -12,12 +12,12 @@ resource "random_password" "mlflow_backend_store" {
 }
 
 resource "aws_db_subnet_group" "rds" {
-  name       = "${var.service-config.name}-rds-subnet-group"
+  name       = "${var.service_config.name}-rds-subnet-group"
   subnet_ids = local.db_subnet_ids
 }
 
 resource "aws_rds_cluster" "mlflow_backend_store" {
-  cluster_identifier        = "${var.service-config.name}-rds"
+  cluster_identifier        = "${var.service_config.name}-rds"
   engine                    = "aurora-postgresql"
   engine_mode               = "serverless"
   port                      = local.db_port

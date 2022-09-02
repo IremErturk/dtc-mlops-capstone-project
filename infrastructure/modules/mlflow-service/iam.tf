@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "${var.service-config.name}-ecs_task_execution_role"
+  name               = "${var.service_config.name}-ecs_task_execution_role"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
@@ -21,7 +21,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
 
 # Required for S3 access
 resource "aws_iam_policy" "s3_policy" {
- name        = "${var.service-config.name}-s3"
+ name        = "${var.service_config.name}-s3"
  policy = jsonencode({
   Version = "2012-10-17"
   Statement = [

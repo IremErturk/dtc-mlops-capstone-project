@@ -49,8 +49,8 @@ module "svc-experiment-tracking" {
   source          = "./modules/mlflow-service"
   count           = local.ecs-enabled
 
-  cluster-id      = aws_ecs_cluster.cluster[count.index].id
-  service-config  = local.svc-experiment-tracking
+  cluster_id      = aws_ecs_cluster.cluster[count.index].id
+  service_config  = local.svc-experiment-tracking
 
   artifact_bucket_arn = aws_s3_bucket.artifacts.arn
   artifact_bucket_id  = aws_s3_bucket.artifacts.id

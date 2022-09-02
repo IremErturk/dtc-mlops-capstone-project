@@ -10,7 +10,7 @@ resource "aws_vpc" "mlflow_vpc" {
   enable_dns_support   = true
 
   tags = {
-    Name = "${var.service-config.name}-vpc"
+    Name = "${var.service_config.name}-vpc"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_subnet" "mlflow_public_subnet" {
   availability_zone       = "${data.aws_availability_zones.available.names[count.index]}"
 
   tags = {
-    Name = "${var.service-config.name}-public-subnet"
+    Name = "${var.service_config.name}-public-subnet"
   }
 }
 
@@ -30,7 +30,7 @@ resource "aws_internet_gateway" "mlflow_gateway" {
   vpc_id = local.vpc_id
 
   tags = {
-    Name = "${var.service-config.name}-igw"
+    Name = "${var.service_config.name}-igw"
   }
 }
 
@@ -44,7 +44,7 @@ resource "aws_route_table" "mlflow_crt" {
   }
 
   tags = {
-    Name = "${var.service-config.name}-crt"
+    Name = "${var.service_config.name}-crt"
   }
 }
 
@@ -63,6 +63,6 @@ resource "aws_vpc_endpoint" "mlflow_endpoint" {
   route_table_ids = [aws_route_table.mlflow_crt.0.id]
 
   tags = {
-    Name = "${var.service-config.name}-endpoint"
+    Name = "${var.service_config.name}-endpoint"
   }
 }

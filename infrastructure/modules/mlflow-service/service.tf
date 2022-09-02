@@ -6,7 +6,7 @@ resource "random_password" "mlflow_password" {
 
 # Task Definition
 resource "aws_ecs_task_definition" "task" {
-  family                   = var.service-config.name
+  family                   = var.service_config.name
   container_definitions = jsonencode([
     {
       name = aws_ecr_repository.repository.name,
@@ -24,22 +24,22 @@ resource "aws_ecs_task_definition" "task" {
       ],
       portMappings = [
         {
-          containerPort = var.service-config.container_port,
-          hostPort = var.service-config.host_port
+          containerPort = var.service_config.container_port,
+          hostPort = var.service_config.host_port
         }
       ],
       secrets = [
         {name = "MLFLOW_DB_PASSWORD", valueFrom = random_password.mlflow_backend_store.result},
         {name = "MLFLOW_TRACKING_PASSWORD", valueFrom = random_password.mlflow_password.result}
       ],
-      memory = var.service-config.task_memory,
-      cpu = var.service-config.task_cpu
+      memory = var.service_config.task_memory,
+      cpu = var.service_config.task_cpu
     }
   ])
   requires_compatibilities = ["FARGATE"]                            # Stating that we are using ECS Fargate -> alternative can be EC2
   network_mode             = "awsvpc"                               # Using awsvpc as our network mode as this is required for Fargate
-  memory                   = var.service-config.task_memory         # Specifying the memory our container requires
-  cpu                      = var.service-config.task_cpu            # Specifying the CPU our container requires
+  memory                   = var.service_config.task_memory         # Specifying the memory our container requires
+  cpu                      = var.service_config.task_cpu            # Specifying the CPU our container requires
   execution_role_arn       = "${aws_iam_role.ecs_task_execution_role.arn}"
 
   depends_on = [aws_ecr_repository.repository, aws_iam_role.ecs_task_execution_role]
@@ -48,16 +48,16 @@ resource "aws_ecs_task_definition" "task" {
 
 
 resource "aws_ecs_service" "service" {
-  name            = var.service-config.name
-  cluster         = "${var.cluster-id}"
+  name            = var.service_config.name
+  cluster         = "${var.cluster_id}"
   task_definition = "${aws_ecs_task_definition.task.arn}" # Referencing the task our service will spin up
   launch_type     = "FARGATE"
-  desired_count   = var.service-config.svc_desired_count
+  desired_count   = var.service_config.svc_desired_count
 
   load_balancer {
     target_group_arn = "${aws_lb_target_group.target_group.arn}" # Referencing our target group
     container_name   = "${aws_ecs_task_definition.task.family}"
-    container_port   = var.service-config.container_port # Specifying the container port
+    container_port   = var.service_config.container_port # Specifying the container port
   }
 
   network_configuration {
@@ -69,12 +69,12 @@ resource "aws_ecs_service" "service" {
 
 resource "aws_security_group" "mlflow_server_sg" {
   count       = local.create_dedicated_vpc ? 1 : 0
-  name        = "${var.service-config.name}-server-sg"
-  description = "Allow access to ${var.service-config.name}-rds from VPC Connector."
+  name        = "${var.service_config.name}-sg"
+  description = "Allow access to ${var.service_config.name}-rds from VPC Connector."
   vpc_id      = local.vpc_id
 
   ingress {
-    description = "Access to ${var.service-config.name}-rds from VPC Connector."
+    description = "Access to ${var.service_config.name}-rds from VPC Connector."
     from_port   = local.db_port
     to_port     = local.db_port
     protocol    = "tcp"
