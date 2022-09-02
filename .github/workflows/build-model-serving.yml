@@ -1,6 +1,7 @@
 name: Build & Deploy FastAPI Model Serving to Amazon ECS
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - model_serving/web_service/*

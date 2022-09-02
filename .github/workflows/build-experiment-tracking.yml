@@ -1,12 +1,12 @@
 name: Build & Deploy MLFlow Experiment Tracking to Amazon ECS
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - experiment_tracking/*
     branches:
       - main
-
 env:
   AWS_REGION: eu-central-1
   ECR_REPOSITORY: mlflow-server
