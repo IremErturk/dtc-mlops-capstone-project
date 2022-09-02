@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "task" {
       image = aws_ecr_repository.repository.repository_url,
       essential = true,
       environment = [
-        {name = "MLFLOW_ARTIFACT_URI", value = "${var.artifact_bucket_id}"}, # ARN ?
+        {name = "MLFLOW_ARTIFACT_URI", value = "s3://${var.artifact_bucket_id}"}, # ARN ?
         {name = "MLFLOW_DB_DIALECT", value = "postgresql"},
         {name = "MLFLOW_DB_USERNAME", value = "${aws_rds_cluster.mlflow_backend_store.master_username}"},
         {name = "MLFLOW_DB_HOST", value = "${aws_rds_cluster.mlflow_backend_store.endpoint}"},
