@@ -1,7 +1,3 @@
-data "aws_vpc" "vpc" {
-  id = local.vpc_id
-}
-
 # Application Load Balancer infront of each
 resource "aws_alb" "application_load_balancer" {
   name               = "${var.service_config.name}-lb"

@@ -2,18 +2,6 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
-
-
 locals {
 
     availability_zones = slice(data.aws_availability_zones.available.names, 0, 3)
