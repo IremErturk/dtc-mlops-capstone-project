@@ -427,7 +427,7 @@ Resources:
   SecurityGroupRDS:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: DeploymentStack/SecurityGroupRDS
+      GroupDescription: MLFlow RDS Security Group
       GroupName: sg_rds
       SecurityGroupEgress:
         - CidrIp: 0.0.0.0/0
@@ -517,7 +517,6 @@ Resources:
               Value: master
           Essential: true
           Image: !Sub "${ServiceImage}"
-            # Fn: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/{ServiceName}"
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -540,7 +539,6 @@ Resources:
         Fn::GetAtt:
           - MLflowExecutionRole
           - Arn
-      Family: DeploymentStackMLflow75B51616
       Memory: "512"
       NetworkMode: awsvpc
       RequiresCompatibilities:
@@ -689,7 +687,7 @@ Resources:
   MLFlowServiceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: DeploymentStack/MLFLOW/Service/SecurityGroup
+      GroupDescription: MLFlow Service Security Group
       SecurityGroupEgress:
         - CidrIp: 0.0.0.0/0
           Description: Allow all outbound traffic by default
@@ -738,7 +736,7 @@ Resources:
   MLFlowServiceTaskCountAutoscalingPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
-      PolicyName: DeploymentStackMLFLOWServiceTaskCountTargetAUTOSCALINGEEA650B6
+      PolicyName: MLFlowServiceTaskCountTargetAutoscaling
       PolicyType: TargetTrackingScaling
       ScalingTargetId:
         Ref: MLFlowServiceTaskCountTarget
