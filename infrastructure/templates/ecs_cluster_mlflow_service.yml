@@ -70,13 +70,6 @@ Resources:
           - Fn::GetAZs: "" # Fn::GetAZs: { Ref: 'AWS::Region' }
       CidrBlock: 10.0.0.0/28
       MapPublicIpOnLaunch: true
-      Tags:
-        - Key: aws-cdk:subnet-name
-          Value: Public
-        - Key: aws-cdk:subnet-type
-          Value: Public
-        - Key: Name
-          Value: DeploymentStack/VPC/PublicSubnet1
 
   VPCPublicSubnet1RouteTable:
     Type: AWS::EC2::RouteTable
@@ -113,8 +106,6 @@ Resources:
       Tags:
         - Key: Name
           Value: DeploymentStack/VPC/PublicSubnet1
-    Metadata:
-      aws:cdk:path: DeploymentStack/VPC/PublicSubnet1/EIP
   
   VPCPublicSubnet1NATGateway:
     Type: AWS::EC2::NatGateway
@@ -421,16 +412,17 @@ Resources:
   ArtifactBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub ${ProjectName}-${ServiceName}-artifacts
-        # Fn::Join:
-        #   - ""
-        #   - - Ref: ProjectName
-        #     - -
-        #     - Ref: ServiceName
-        #     - -artifacts-
-        #     - Ref: AWS::AccountId
+      # BucketName: !Sub ${ProjectName}-${ServiceName}-artifacts
+      BucketName:
+        Fn::Join:
+          - ""
+          - - Ref: ProjectName
+            - "-"
+            - Ref: ServiceName
+            - "-artifacts-"
+            - Ref: AWS::AccountId
     UpdateReplacePolicy: Retain
-    DeletionPolicy: Retain
+    # DeletionPolicy: Retain
   
   SecurityGroupRDS:
     Type: AWS::EC2::SecurityGroup
@@ -524,13 +516,8 @@ Resources:
             - Name: USERNAME
               Value: master
           Essential: true
-          Image: !Ref ServiceImage
-            # Fn:Sub:  ${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}
-            # Fn::Sub: ${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:07e81a2212008ff11247a689920b8fb540f5b0156d95240502f5ec041f21e0dc
-            # Value: 
-            #   Fn::GetAtt: 
-            #     - ECRRepository
-            #     - repository_url # # aws_ecr_repository.repository.repository_url,
+          Image: !Sub "${ServiceImage}"
+            # Fn: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/{ServiceName}"
           LogConfiguration:
             LogDriver: awslogs
             Options:
