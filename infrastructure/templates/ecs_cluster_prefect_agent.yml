@@ -20,36 +20,36 @@ Parameters:
     Description: Allow Increasing Memory - from 8192 on requires 4096 CPU and increases in 1024 increments
     Default: 1024
     AllowedValues: [512, 1024, 2048, 4096, 5120, 6144, 7168, 8192 , 9216, 10240]
-  cluster:
+  ClusterName:
     Type: String
     Description: Cluster name
     Default: mlops-zoomcamp-capstone
-  awsaccountid:
+  AWS_Account_ID:
     Type: String
     Description: AWS Account ID
-  region:
+  AWS_Region:
     Type: String
     Description: AWS region name
     Default: eu-central-1
-  project:
+  ServiceName:
     Type: String
     Description: Project name
     Default: prefect-agent
-  image:
+  ServiceImage:
     Type: String
     Description: Docker image for the service
-    Default: prefecthq/prefect:2.1.1-python3.10 # TODO: Check the correct version
+    Default: prefecthq/prefect:2.1.1-python3.10 
 
 Resources:
   # PrefectFargateCluster:
   #   Type: AWS::ECS::Cluster
   #   Properties:
-  #     ClusterName: !Ref cluster
+  #     ClusterName: !Ref ClusterName
 
   PrefectLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Ref project
+      LogGroupName: !Ref ServiceName
       RetentionInDays: 7
 
   PrefectVPC:
@@ -85,17 +85,16 @@ Resources:
         Fn::Select:
           - 0
           - Fn::GetAZs: { Ref: 'AWS::Region' }
-      MapPublicIpOnLaunch: true
+      MapPublicIpOnLaunch: true 
   SubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrefectECSServiceSubnet
       RouteTableId: !Ref PublicRouteTable
-
   ExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub "${project}_ecs_execution_role"
+      RoleName: !Sub "${ServiceName}_ecs_execution_role"
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -114,11 +113,10 @@ Resources:
                 Resource: "*"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
-
   TaskRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub "${project}_ecs_task_role"
+      RoleName: !Sub "${ServiceName}_ecs_task_role"
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -135,39 +133,37 @@ Resources:
                 Action:
                   - s3:*
                 Resource: "*"
-
   PrefectTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Ref project
+      Family: !Ref ServiceName
       Cpu: !Ref cpu
       Memory: !Ref memory
       NetworkMode: awsvpc
       ExecutionRoleArn: !Ref ExecutionRole
       TaskRoleArn: !Ref TaskRole
       ContainerDefinitions:
-        - Name: !Ref project
-          Image: !Ref image
+        - Name: !Ref ServiceName
+          Image: !Ref ServiceImage
           EntryPoint:
             - "bash"
             - "-c"
           StopTimeout: 120
           Command:
-            - !Sub "prefect agent start -q ${project}"
+            - !Sub "prefect agent start -q ${ServiceName}"
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-region: !Ref AWS::Region
               awslogs-group: !Ref PrefectLogGroup
-              awslogs-stream-prefix: !Ref project
+              awslogs-stream-prefix: !Ref ServiceName
           Secrets:
             - Name: PREFECT_API_URL
-              ValueFrom: !Sub "arn:aws:ssm:${region}:${awsaccountid}:parameter/PREFECT_API_URL"
+              ValueFrom: !Sub "arn:aws:ssm:${AWS_Region}:${AWS_Account_ID}:parameter/PREFECT_API_URL"
             - Name: PREFECT_API_KEY
-              ValueFrom: !Sub "arn:aws:ssm:${region}:${awsaccountid}:parameter/PREFECT_API_KEY"
+              ValueFrom: !Sub "arn:aws:ssm:${AWS_Region}:${AWS_Account_ID}:parameter/PREFECT_API_KEY"
       RequiresCompatibilities:
         - FARGATE
-
   PrefectECSService:
     Type: AWS::ECS::Service
     DependsOn:
@@ -175,8 +171,8 @@ Resources:
       - RouteToGateway
       # - PrefectFargateCluster
     Properties:
-      ServiceName: !Ref project
-      Cluster: !Sub "arn:aws:ecs:${region}:${awsaccountid}:cluster/${cluster}"
+      ServiceName: !Ref ServiceName
+      Cluster: !Sub "arn:aws:ecs:${AWS_Region}:${AWS_Account_ID}:cluster/${ClusterName}"
       TaskDefinition: !Ref PrefectTaskDefinition
       DesiredCount: 1
       LaunchType: FARGATE

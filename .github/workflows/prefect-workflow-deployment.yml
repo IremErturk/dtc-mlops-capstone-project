@@ -1,30 +1,18 @@
 # Reference: https://github.com/anna-geller/dataflow-ops/blob/main/.github/workflows/ecs_prefect_agent.yml#L137
 
-name: Prefect 2 - Deploy Flows to registered Prefect agents
+name: Prefect Step 2 - Deploy Flows to registered Prefect agents
 
 on:
   workflow_dispatch:
     inputs:
-      # cpu:
-      #   description: CPU for the agent
-      #   required: true
-      #   default: '512'
-      #   type: choice
-      #   options: ['256', '512', '1024', '2048', '4096']
-      # memory:
-      #   description: Memory for the agent
-      #   required: true
-      #   default: '1024'
-      #   type: choice
-      #   options: ['512', '1024', '2048', '4096', '5120', '6144', '7168', '8192']
       s3_path:
         description: S3 path in the format bucket/path
         required: true
-        default: 'mlops-zoomcamp-capstone-artifacts/prefect-artifacts/prod'
+        default: mlops-zoomcamp-capstone-artifacts/prefect-artifacts/deployments
       s3_block_name:
         description: Name of the S3 block
         required: true
-        default: 'prod'
+        default: deployments
   # push:
   #   paths:
   #     - workflow_orchestration/flows/*
@@ -141,14 +129,14 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          # poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name cicd -q ${{ env.PROJECT }} -sb s3/prod -v $GITHUB_SHA -o $FLOW_NAME.yaml
+          poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name cicd -q ${{ env.PROJECT }} -sb s3/prod -v $GITHUB_SHA -o $FLOW_NAME.yaml
           echo "poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name cicd -q ${{ env.PROJECT }} -sb s3/prod -v $GITHUB_SHA -o $FLOW_NAME.yaml"
-          # poetry run prefect deployment apply $FLOW_NAME.yaml
-          poetry run prefect deployment build flows/datalake_flow.py:datalake_flow --name cicd -q prefect-agent -sb s3/prod -v 973aed7 -o datalake_flow.yaml
-          poetry run prefect deployment apply datalake_flow.yaml
-          poetry run prefect deployment build flows/model_flow.py:model_flow --name cicd -q prefect-agent -sb s3/prod -v 973aed7 -o model_flow.yaml
-          poetry run prefect deployment apply model_flow.yaml
-          echo ::set-output name=flow_manifest::$FLOW_NAME.yaml
+          poetry run prefect deployment apply $FLOW_NAME.yaml
+          # poetry run prefect deployment build flows/datalake_flow.py:datalake_flow --name cicd -q prefect-agent -sb s3/prod -v 973aed7 -o datalake_flow.yaml
+          # poetry run prefect deployment apply datalake_flow.yaml
+          # poetry run prefect deployment build flows/model_flow.py:model_flow --name cicd -q prefect-agent -sb s3/prod -v 973aed7 -o model_flow.yaml
+          # poetry run prefect deployment apply model_flow.yaml
+          # echo ::set-output name=flow_manifest::$FLOW_NAME.yaml
 
       - name: Upload task definition as artifact
         uses: actions/upload-artifact@v3
