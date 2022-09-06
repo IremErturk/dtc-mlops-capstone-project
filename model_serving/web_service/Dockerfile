@@ -9,7 +9,7 @@ RUN python -m pip install --upgrade pip
 
 RUN mkdir -p /opt/web_service/repo
 
-COPY fastapi_app.py /opt/web_service/repo/
+COPY fastapi_app.py constants.py /opt/web_service/repo/
 COPY pyproject.toml poetry.toml poetry.lock /opt/web_service/repo/
 
 WORKDIR /opt/web_service/repo
