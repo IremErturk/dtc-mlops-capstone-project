@@ -134,19 +134,21 @@ jobs:
             --work-queue ${{ env.SERVICE_NAME }} \
             --storage-block "s3/${{ github.event.inputs.s3_block_name }}" \
             --version $GITHUB_SHA \
-            --override "env.AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}, env.AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}, AWS_DEFAULT_REGION=${{ env.AWS_REGION }}"
-            -output $FLOW_NAME.yaml
+            --override "env.AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}, env.AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}, AWS_DEFAULT_REGION=${{ env.AWS_REGION }}" \
+            --output $FLOW_NAME.yaml
+          echo "poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME  -q ${{ env.SERVICE_NAME }} -sb s3/${{ github.event.inputs.s3_block_name }} "
+          poetry run prefect deployment apply $FLOW_NAME.yaml
+          echo ::set-output name=flow_manifest::$FLOW_NAME.yaml
         # run: |
-        #   FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-        #   poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name cicd -q ${{ env.SERVICE_NAME }} -sb s3/deployments -v $GITHUB_SHA -o $FLOW_NAME.yaml
-        #   echo "poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name cicd -q ${{ env.SERVICE_NAME }} -sb s3/deployments -v $GITHUB_SHA -o $FLOW_NAME.yaml"
-        #   poetry run prefect deployment apply $FLOW_NAME.yaml
-        #   # poetry run prefect deployment build flows/datalake_flow.py:datalake_flow --name cicd -q prefect-agent -sb s3/deployments -v 973aed7 -o datalake_flow.yaml
-        #   # poetry run prefect deployment apply datalake_flow.yaml
-        #   # poetry run prefect deployment build flows/model_flow.py:model_flow --name cicd -q prefect-agent -sb s3/deployments -v 973aed7 -o model_flow.yaml
-        #   # poetry run prefect deployment apply model_flow.yaml
-        #   # echo ::set-output name=flow_manifest::$FLOW_NAME.yaml
-
+        #   poetry run prefect deployment build flows/datalake_flow.py:datalake_flow \
+        #     --name cicd \
+        #     --work-queue prefect-agent \
+        #     --storage-block s3/deployments \
+        #     --override "env.AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}, env.AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}, AWS_DEFAULT_REGION=${{ env.AWS_REGION }}" \
+        #     --output datalake_flow.yaml
+        #   echo "poetry run prefect deployment build flows/datalake_flow.py:datalake_flow  -q  prefect-agent -sb s3/deployments"
+        #   poetry run prefect deployment apply datalake_flow.yaml
+        #   echo ::set-output name=flow_manifest::datalake_flow.yaml
       - name: Upload task definition as artifact
         uses: actions/upload-artifact@v3
         with:
