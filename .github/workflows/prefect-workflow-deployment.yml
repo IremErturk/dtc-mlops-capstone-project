@@ -127,6 +127,9 @@ jobs:
       - name: Deploy flows to S3
         working-directory: workflow_orchestration
         id: build
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
           poetry run prefect deployment build ${{ matrix.flows }}:$FLOW_NAME \
