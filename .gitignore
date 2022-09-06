@@ -23,6 +23,7 @@ __pycache__/
 **/.env
 
 # artifacts
+**/artifacts
 **/data
 **/models
 
