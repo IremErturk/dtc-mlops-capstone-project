@@ -115,8 +115,9 @@ def fine_tune_and_save(dataloaders, model, model_path):
     ).to_fp16()
     # learn.validate()
     # learn.fit_one_cycle(1, 1e-4)
-    learn.export(model_path) # TODO: expects that models folder is created
-    print(f"Model for poetry-generator is created at {model_path}")
+    # learn.export(model_path) # TODO: expects that models folder is created
+    torch.save(learn.model, model_path)
+    print(f"Model for poem-generator is created at {model_path}")
     return model_path
 
 
@@ -133,7 +134,6 @@ def model_flow():
     gpt2_tokenizer, gpt2_model = init_artifacts()
     if os.getenv("environment") == "local":
         ballads_data = read_data_local(path=RAW_DATA_LOCAL_PATH, folders=["forms/ballad/"])
-        prepare_models_folder()
     else:
         ballads_data = read_data_s3(bucket_name=S3_ARTIFACT_BUCKET_NAME, bucket_path=f"{S3_PREFECT_PATH}/{RAW_DATA_PATH}", prefixes=["forms/ballad/"])
 
@@ -143,6 +143,7 @@ def model_flow():
     )
 
     if os.getenv("environment") != "local":
+        prepare_models_folder()
         upload_folder_to_s3(model_path=MODELS_LOCAL_PATH, bucket_path=MODELS_S3_PATH)
 
 
