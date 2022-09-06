@@ -12,7 +12,8 @@ fastapi = "^0.81.0"
 fastai = "^2.7.9"
 transformers = "^4.21.3"
 boto3 = "^1.24"
-
+torch = "^1.12.1"
+torchvision = "^0.13.1"
 
 [tool.poetry.dev-dependencies]
 python-dotenv = "^0.20.0"
