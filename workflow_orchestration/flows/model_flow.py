@@ -3,13 +3,13 @@ from typing import List
 
 import boto3
 from constants import (
+    MODEL_NAME,
     MODELS_LOCAL_PATH,
     MODELS_S3_PATH,
     RAW_DATA_LOCAL_PATH,
-    S3_ARTIFACT_BUCKET_NAME, 
-    S3_PREFECT_PATH,
     RAW_DATA_PATH,
-    MODEL_NAME,
+    S3_ARTIFACT_BUCKET_NAME,
+    S3_PREFECT_PATH,
 )
 from dotenv import load_dotenv
 from fastai.text.all import (
@@ -67,6 +67,7 @@ def read_data_local(path: str, folders: List[str]) -> List[str]:
     print(f"Data size: {len(data)}")
     return data
 
+
 @task
 def prepare_models_folder():
     models_root_folder = MODELS_LOCAL_PATH
@@ -74,8 +75,9 @@ def prepare_models_folder():
         os.makedirs(models_root_folder)
     pass
 
+
 @task
-def read_data_s3(bucket_name: str, bucket_path:str ,prefixes: List[str]) -> List[str]:
+def read_data_s3(bucket_name: str, bucket_path: str, prefixes: List[str]) -> List[str]:
     s3 = boto3.client("s3")
     data = []
     for prefix in prefixes:
@@ -135,7 +137,11 @@ def model_flow():
     if os.getenv("environment") == "local":
         ballads_data = read_data_local(path=RAW_DATA_LOCAL_PATH, folders=["forms/ballad/"])
     else:
-        ballads_data = read_data_s3(bucket_name=S3_ARTIFACT_BUCKET_NAME, bucket_path=f"{S3_PREFECT_PATH}/{RAW_DATA_PATH}", prefixes=["forms/ballad/"])
+        ballads_data = read_data_s3(
+            bucket_name=S3_ARTIFACT_BUCKET_NAME,
+            bucket_path=f"{S3_PREFECT_PATH}/{RAW_DATA_PATH}",
+            prefixes=["forms/ballad/"],
+        )
 
     dls = prepare_data(tokenizer=gpt2_tokenizer, data=ballads_data)
     model_path = fine_tune_and_save(
@@ -149,4 +155,4 @@ def model_flow():
 
 model_flow()
 
- #poetry run prefect deployment build flows/model_flow.py:model_flow --name cicd --work-queue prefect-agent --storage-block s3/deployments --output model_flow.yaml
+# poetry run prefect deployment build flows/model_flow.py:model_flow --name cicd --work-queue prefect-agent --storage-block s3/deployments --output model_flow.yaml
