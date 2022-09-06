@@ -6,10 +6,10 @@ from constants import (
     MODELS_LOCAL_PATH,
     MODELS_S3_PATH,
     RAW_DATA_LOCAL_PATH,
-    RAW_DATA_S3_PATH,
     S3_ARTIFACT_BUCKET_NAME, 
     S3_PREFECT_PATH,
-    RAW_DATA_PATH
+    RAW_DATA_PATH,
+    MODEL_NAME,
 )
 from dotenv import load_dotenv
 from fastai.text.all import (
@@ -31,8 +31,6 @@ from prefect_shell import shell_run_command
 from transformers import GPT2LMHeadModel, GPT2TokenizerFast
 
 load_dotenv()
-
-MODEL_NAME = "gtp2-learn.pkl"
 
 
 class TransformersTokenizer(Transform):
