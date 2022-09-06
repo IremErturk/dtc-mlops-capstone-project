@@ -1,11 +1,17 @@
 KAGGLE_DATASET_OWNER = "michaelarman"
 KAGGLE_DATASET_NAME = "poemsdataset"
 
-RAW_DATA_LOCAL_PATH = "../data/poems"
-MODELS_LOCAL_PATH = "../data/models"
+LOCAL_ROOT_PATH = ".."
+S3_ARTIFACT_BUCKET_NAME = "mlops-zoomcamp-capstone-artifacts"
 
-s3_bucket_name = "mlops-zoomcamp-capstone-artifacts"
-s3_prefect_artifacts = "prefect-artifacts"
+S3_PREFECT_PATH = "prefect-artifacts"
+LOCAL_ARTIFACT_PATH = "artifacts"
 
-RAW_DATA_S3_PATH = f"{s3_bucket_name}/{s3_prefect_artifacts}/raw_data/poems"
-MODELS_S3_PATH = f"{s3_bucket_name}/{s3_prefect_artifacts}/models"
+RAW_DATA_PATH = "raw_data/poems"
+MODELS_PATH = "models"
+
+
+RAW_DATA_S3_PATH    = f"{S3_ARTIFACT_BUCKET_NAME}/{S3_PREFECT_PATH}/{RAW_DATA_PATH}"
+RAW_DATA_LOCAL_PATH = f"{LOCAL_ROOT_PATH}/{LOCAL_ARTIFACT_PATH}/{RAW_DATA_PATH}"
+MODELS_S3_PATH      = f"{S3_ARTIFACT_BUCKET_NAME}/{S3_PREFECT_PATH}/{MODELS_PATH}"
+MODELS_LOCAL_PATH   = f"{LOCAL_ROOT_PATH}/{LOCAL_ARTIFACT_PATH}/{MODELS_PATH}"
