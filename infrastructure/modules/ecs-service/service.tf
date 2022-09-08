@@ -30,8 +30,8 @@ resource "aws_ecs_task_definition" "task" {
   network_mode             = "awsvpc"                               # Using awsvpc as our network mode as this is required for Fargate
   memory                   = var.service-config.task_memory         # Specifying the memory our container requires
   cpu                      = var.service-config.task_cpu            # Specifying the CPU our container requires
-  execution_role_arn       = "${aws_iam_role.ecs_task_execution_role.arn}"
-
+  execution_role_arn       = "${aws_iam_role.ecs_task_execution_role.arn}" # that the Amazon ECS container agent and the Docker daemon can assume.
+  task_role_arn            = "${aws_iam_role.ecs_task_role.arn}"           # that allows your Amazon ECS container task to make calls to other AWS services.
   depends_on = [aws_ecr_repository.repository, aws_iam_role.ecs_task_execution_role]
 
 }
