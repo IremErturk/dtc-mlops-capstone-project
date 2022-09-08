@@ -25,6 +25,7 @@ ENV PATH=/opt/web_service/repo/.venv/bin:$PATH
 
 ENV PYTHONUNBUFFERED 1
 WORKDIR /opt/web_service/repo
+RUN mkdir -p ../../artifacts/models
 
 EXPOSE 8000
 

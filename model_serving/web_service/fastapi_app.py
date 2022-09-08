@@ -28,7 +28,7 @@ class PoemFeatures(BaseModel):
 app = FastAPI()
 
 # initialize some external resources, for faster responses to api
-MODEL_PATH = f"../{MODELS_LOCAL_PATH}/{MODEL_NAME}"
+TMP_MODEL_PATH = f"../{MODELS_LOCAL_PATH}/{MODEL_NAME}"
 
 
 def init():
@@ -39,7 +39,7 @@ def init():
     if os.getenv("environment") != "local":
         s3_client = boto3.client("s3")
         s3_client.download_file(
-            S3_ARTIFACT_BUCKET_NAME, f"{S3_PREFECT_PATH}/{MODELS_PATH}/{MODEL_NAME}", MODEL_PATH
+            S3_ARTIFACT_BUCKET_NAME, f"{S3_PREFECT_PATH}/{MODELS_PATH}/{MODEL_NAME}", TMP_MODEL_PATH
         )
     return tokenizer
 
@@ -65,7 +65,7 @@ def create_poem(baseline: str):
 
     # learn = load_learner(learn_path)
     # preds = learn.model.generate(inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True)
-    model = trch.load(MODEL_PATH)
+    model = trch.load(TMP_MODEL_PATH)
     preds = model.generate(
         inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True
     )
