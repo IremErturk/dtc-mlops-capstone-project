@@ -10,7 +10,7 @@ from constants import (
     S3_PREFECT_PATH,
 )
 from dotenv import load_dotenv
-from fastai.text.all import load_learner, tensor, torch
+import torch as trch
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import GPT2TokenizerFast
@@ -65,11 +65,11 @@ async def create_item(poem_features: PoemFeatures):
 
 def create_poem(baseline: str):
     baseline_ids = tokenizer.encode(baseline)
-    inp = tensor(baseline_ids)[None]
+    inp = trch.as_tensor(baseline_ids)[None]
 
     # learn = load_learner(learn_path)
     # preds = learn.model.generate(inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True)
-    model = torch.load(MODEL_PATH)
+    model = trch.load(MODEL_PATH)
     preds = model.generate(
         inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True
     )
