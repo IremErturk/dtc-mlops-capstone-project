@@ -53,9 +53,14 @@ def root():
 
 
 @app.post("/poem/")
-async def create_item(poem_features: PoemFeatures):
+def create_item(poem_features: PoemFeatures):
     created_poem = create_poem(baseline=poem_features.baseline)
     out = {"poem": created_poem}
+    return out
+
+@app.post("/poem2/")
+def create_item(poem_features: PoemFeatures):
+    out = {"poem": poem_features.baseline}
     return out
 
 
