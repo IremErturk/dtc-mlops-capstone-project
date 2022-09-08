@@ -14,7 +14,15 @@ resource "aws_ecs_task_definition" "task" {
         }
       ],
       "memory": ${var.service-config.task_memory},
-      "cpu": ${var.service-config.task_cpu}
+      "cpu": ${var.service-config.task_cpu},
+      "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${var.service-config.name}-lg",
+            "awslogs-region": "eu-central-1",
+            "awslogs-stream-prefix": "${var.service-config.name}"
+          }
+      } 
     }
   ]
   DEFINITION
