@@ -37,11 +37,7 @@ def init():
 
     # download model from s3 to local model_path
     if os.getenv("environment") != "local":
-        s3_client = boto3.client(
-            "s3",
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-        )
+        s3_client = boto3.client("s3")
         s3_client.download_file(
             S3_ARTIFACT_BUCKET_NAME, f"{S3_PREFECT_PATH}/{MODELS_PATH}/{MODEL_NAME}", MODEL_PATH
         )
