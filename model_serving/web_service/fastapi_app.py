@@ -1,8 +1,9 @@
+import logging
 import os
 from typing import Union
-import logging
 
 import boto3
+import torch as trch
 from constants import (
     MODEL_NAME,
     MODELS_LOCAL_PATH,
@@ -11,7 +12,6 @@ from constants import (
     S3_PREFECT_PATH,
 )
 from dotenv import load_dotenv
-import torch as trch
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import GPT2TokenizerFast
@@ -56,11 +56,11 @@ def root():
 
 @app.post("/poem/")
 def create_item(poem_features: PoemFeatures):
-    logger.warning("Create Poem Endpoint...")
+    logger.warning("Create Poem Endpoint is being requested")
     created_poem = create_poem(baseline=poem_features.baseline)
-    logger.warning(f"Create Poem task is completed with: {type(created_poem)}, {create_poem}")
     out = {"poem": created_poem}
     return out
+
 
 def create_poem(baseline: str):
     baseline_ids = tokenizer.encode(baseline)
@@ -68,14 +68,12 @@ def create_poem(baseline: str):
 
     # learn = load_learner(learn_path)
     # preds = learn.model.generate(inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True)
-    logger.warning(f"Baseline_Ids and inp are initialized")
     logger.warning(f"Model loading is started")
     try:
         model = trch.load(TMP_MODEL_PATH)
     except Exception as e:
         logger.warning(f"Error is happened while loading model {e}, {e.message} ")
 
-    logger.warning(f"Model is loaded from local {type(model)}")
     preds = model.generate(
         inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True
     )
