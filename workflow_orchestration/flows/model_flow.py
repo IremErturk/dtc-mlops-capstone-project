@@ -1,3 +1,4 @@
+# Reference: https://www.kaggle.com/code/michaelarman/poem-generation-with-transformers/notebook
 import os
 from typing import List
 
@@ -154,5 +155,3 @@ def model_flow():
 
 
 model_flow()
-
-# poetry run prefect deployment build flows/model_flow.py:model_flow --name cicd --work-queue prefect-agent --storage-block s3/deployments --output model_flow.yaml

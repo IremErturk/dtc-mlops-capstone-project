@@ -57,5 +57,3 @@ def datalake_flow():
 
 
 datalake_flow()
-
- #poetry run prefect deployment build flows/datalake_flow.py:datalake_flow --name cicd --work-queue prefect-agent --storage-block s3/deployments --output datalake_flow.yaml

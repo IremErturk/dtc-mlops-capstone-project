@@ -59,13 +59,13 @@ python <flow-name>.py
 # Run the deployment for datalake_flow
 poetry run prefect deployment build flows/datalake_flow.py:datalake_flow \
         --name cicd \
-        --work-queue prefect-agent \ 
+        --work-queue prefect-agent \
         --storage-block s3/deployments \
         --output datalake_flow.yaml
 
 poetry run prefect deployment build flows/model_flow.py:model_flow \
         --name cicd \
-        --work-queue prefect-agent \ 
+        --work-queue prefect-agent \
         --storage-block s3/deployments \
         --output model_flow.yaml
 ```
@@ -74,12 +74,12 @@ poetry run prefect deployment build flows/model_flow.py:model_flow \
 ## Cloud Development
 
 1. Create common Cloud Resources.
-    Please ensure to follow instructions in infrastructure/README to create common resources such as artifact bucket. 
+    Please ensure to follow instructions in infrastructure/README to create common resources such as artifact bucket.
 2. Create Prefect Cloud Resources
-    For deploying the prefect-agent in AWS resources, the cloud resources should be created by cloudformation template `infrastructure/templates/ecs_cluster_prefect_agent.yml` file. The creation of prefect specific resources is automated with the GitHub Actions workflow [`prefect-workflow-creation.yml`](../.github/workflows/prefect-infra-creation.yml). The workflow needs to be triggered manually by GitHub Actions UI. 
-    - Requirement: Ensure you have set your Github repository secrets as described [here](https://docs.github.com/en/codespaces/managing-codespaces-for-your-organization/managing-encrypted-secrets-for-your-repository-and-organization-for-github-codespaces fo all mentioned environment variables in local development section. 
+    For deploying the prefect-agent in AWS resources, the cloud resources should be created by cloudformation template `infrastructure/templates/ecs_cluster_prefect_agent.yml` file. The creation of prefect specific resources is automated with the GitHub Actions workflow [`prefect-workflow-creation.yml`](../.github/workflows/prefect-infra-creation.yml). The workflow needs to be triggered manually by GitHub Actions UI.
+    - Requirement: Ensure you have set your Github repository secrets as described [here](https://docs.github.com/en/codespaces/managing-codespaces-for-your-organization/managing-encrypted-secrets-for-your-repository-and-organization-for-github-codespaces fo all mentioned environment variables in local development section.
 3. Create Prefect Deployments from flows
-    By `prefect-workflow-deployment.yml` create the deployments in the prefect-agent and run the workflows in aws-powered agent. The pipeline might fail on step `Deploy flows to S3` therefore if you encounter such a problem you can run the flow by following commands 
+    By `prefect-workflow-deployment.yml` create the deployments in the prefect-agent and run the workflows in aws-powered agent. The pipeline might fail on step `Deploy flows to S3` therefore if you encounter such a problem you can run the flow by following commands
 
     ```bash
     # Run datalake_flow
@@ -91,7 +91,7 @@ poetry run prefect deployment build flows/model_flow.py:model_flow \
 
 
 
-## Future Work: Alternative Dataset and Approaches 
+## Future Work: Alternative Dataset and Approaches
 - [Complete poetryfoundation.org dataset](https://www.kaggle.com/datasets/johnhallman/complete-poetryfoundationorg-dataset/code)
 - [PoemGeneration using Seq2Seq|Memory Networks](https://www.kaggle.com/code/pikkupr/poemgeneration-using-seq2seq-memory-networks)
 - [Poem Generation with Transformers](https://www.kaggle.com/code/michaelarman/poem-generation-with-transformers/notebook)
