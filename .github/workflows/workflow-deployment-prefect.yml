@@ -13,16 +13,8 @@ on:
         description: Name of the S3 block
         required: true
         default: deployments
-  # push:
-  #   paths:
-  #     - workflow_orchestration/flows/*
-  #   branches:
-  #     - main
 env:
   AWS_REGION: eu-central-1
-  ECR_REPOSITORY: prefect-agent
-  DOCKER_PATH: ./workflow_orchestration/
-  ECS_CLUSTER: mlops-zoomcamp-capstone
   SERVICE_NAME: prefect-agent
   PREFECT_VERSION: 2.1.1
 
