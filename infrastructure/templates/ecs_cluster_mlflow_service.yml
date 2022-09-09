@@ -4,7 +4,6 @@ Description: >
   Creates a new AWS VPC and a new ECS Cluster. It then deploys an ECS task definition and ECS service
   running the MLFlow server in a subnet created within that VPC.
   The service can then be used as experiment tracking layer for MLOps pipelines
-
 Parameters:
   ProjectName:
     Type: String
@@ -15,9 +14,7 @@ Parameters:
   ServiceImage:
     Type: String
     Description: Docker image for the service
-
 Resources:
-
   TaskRole:
     Type: AWS::IAM::Role
     Properties:
@@ -40,7 +37,6 @@ Resources:
             - - "arn:"
               - Ref: AWS::Partition
               - :iam::aws:policy/AmazonECS_FullAccess
-  
   DBSecret:
     Type: AWS::SecretsManager::Secret
     Properties:
@@ -50,7 +46,6 @@ Resources:
       Name: dbPassword
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
-
   MLFLowVPC:
     Type: AWS::EC2::VPC
     Properties:
@@ -58,7 +53,6 @@ Resources:
       EnableDnsSupport: true
       EnableDnsHostnames: true
       InstanceTenancy: default # todo?
-
   VPCPublicSubnet1Subnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -70,7 +64,6 @@ Resources:
           - Fn::GetAZs: "" # Fn::GetAZs: { Ref: 'AWS::Region' }
       CidrBlock: 10.0.0.0/28
       MapPublicIpOnLaunch: true
-
   VPCPublicSubnet1RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -87,7 +80,6 @@ Resources:
         Ref: VPCPublicSubnet1RouteTable
       SubnetId:
         Ref: VPCPublicSubnet1Subnet
-
   VPCPublicSubnet1DefaultRoute:
     Type: AWS::EC2::Route
     Properties:
@@ -98,7 +90,6 @@ Resources:
         Ref: VPCInternetGateaway
     DependsOn:
       - VPCGateawayAttachement
-
   VPCPublicSubnet1:
     Type: AWS::EC2::EIP
     Properties:
@@ -106,7 +97,6 @@ Resources:
       Tags:
         - Key: Name
           Value: DeploymentStack/VPC/PublicSubnet1
-  
   VPCPublicSubnet1NATGateway:
     Type: AWS::EC2::NatGateway
     Properties:
@@ -124,7 +114,6 @@ Resources:
       - VPCPublicSubnet1RouteTableAssociation
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PublicSubnet1/NATGateway
-  
   VPCPublicSubnet2Subnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -145,7 +134,6 @@ Resources:
           Value: DeploymentStack/VPC/PublicSubnet2
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PublicSubnet2/Subnet
-  
   VPCPublicSubnet2RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -156,7 +144,6 @@ Resources:
           Value: DeploymentStack/VPC/PublicSubnet2
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PublicSubnet2/RouteTable
-  
   VPCPublicSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -166,7 +153,6 @@ Resources:
         Ref: VPCPublicSubnet2Subnet
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PublicSubnet2/RouteTableAssociation
-  
   VPCPublicSubnet2DefaultRoute:
     Type: AWS::EC2::Route
     Properties:
@@ -179,7 +165,6 @@ Resources:
       - VPCGateawayAttachement
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PublicSubnet2/DefaultRoute
-  
   VPCPrivateSubnet1Subnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -200,7 +185,6 @@ Resources:
           Value: DeploymentStack/VPC/PrivateSubnet1
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PrivateSubnet1/Subnet
-  
   VPCPrivateSubnet1RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -211,7 +195,6 @@ Resources:
           Value: DeploymentStack/VPC/PrivateSubnet1
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PrivateSubnet1/RouteTable
-  
   VPCPrivateSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -221,7 +204,6 @@ Resources:
         Ref: VPCPrivateSubnet1Subnet
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PrivateSubnet1/RouteTableAssociation
-  
   VPCPrivateSubnet1DefaultRoute:
     Type: AWS::EC2::Route
     Properties:
@@ -232,7 +214,6 @@ Resources:
         Ref: VPCPublicSubnet1NATGateway
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PrivateSubnet1/DefaultRoute
-  
   VPCPrivateSubnet2Subnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -253,7 +234,6 @@ Resources:
           Value: DeploymentStack/VPC/PrivateSubnet2
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PrivateSubnet2/Subnet
-  
   VPCPrivateSubnet2RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -264,7 +244,6 @@ Resources:
           Value: DeploymentStack/VPC/PrivateSubnet2
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PrivateSubnet2/RouteTable
-  
   VPCPrivateSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -274,7 +253,6 @@ Resources:
         Ref: VPCPrivateSubnet2Subnet
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PrivateSubnet2/RouteTableAssociation
-  
   VPCPrivateSubnet2DefaultRoute:
     Type: AWS::EC2::Route
     Properties:
@@ -285,7 +263,6 @@ Resources:
         Ref: VPCPublicSubnet1NATGateway
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/PrivateSubnet2/DefaultRoute
-  
   VPCDBSubnet1Subnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -306,7 +283,6 @@ Resources:
           Value: DeploymentStack/VPC/DBSubnet1
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/DBSubnet1/Subnet
-  
   VPCDBSubnet1RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -317,7 +293,6 @@ Resources:
           Value: DeploymentStack/VPC/DBSubnet1
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/DBSubnet1/RouteTable
-  
   VPCDBSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -327,7 +302,6 @@ Resources:
         Ref: VPCDBSubnet1Subnet
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/DBSubnet1/RouteTableAssociation
-  
   VPCDBSubnet2Subnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -348,7 +322,6 @@ Resources:
           Value: DeploymentStack/VPC/DBSubnet2
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/DBSubnet2/Subnet
-  
   VPCDBSubnet2RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -359,7 +332,6 @@ Resources:
           Value: DeploymentStack/VPC/DBSubnet2
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/DBSubnet2/RouteTable
-  
   VPCDBSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -369,7 +341,6 @@ Resources:
         Ref: VPCDBSubnet2Subnet
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/DBSubnet2/RouteTableAssociation
-  
   VPCInternetGateaway:
     Type: AWS::EC2::InternetGateway
     Properties:
@@ -378,7 +349,6 @@ Resources:
           Value: DeploymentStack/VPC
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/IGW
-  
   VPCGateawayAttachement:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
@@ -388,7 +358,6 @@ Resources:
         Ref: VPCInternetGateaway
     Metadata:
       aws:cdk:path: DeploymentStack/VPC/VPCGW
-  
   VPCS3Endpoint:
     Type: AWS::EC2::VPCEndpoint
     Properties:
@@ -408,7 +377,6 @@ Resources:
         - Ref: VPCDBSubnet1RouteTable
         - Ref: VPCDBSubnet2RouteTable
       VpcEndpointType: Gateway
-  
   ArtifactBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -423,7 +391,6 @@ Resources:
             - Ref: AWS::AccountId
     UpdateReplacePolicy: Retain
     # DeletionPolicy: Retain
-  
   SecurityGroupRDS:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -443,7 +410,6 @@ Resources:
         Ref: MLFLowVPC
     Metadata:
       aws:cdk:path: DeploymentStack/SecurityGroupRDS/Resource
-  
   RDSSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
@@ -453,7 +419,6 @@ Resources:
         - Ref: VPCDBSubnet2Subnet
     Metadata:
       aws:cdk:path: DeploymentStack/MYSQL/SubnetGroup/Default
-  
   RDSDBInstance:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -484,14 +449,12 @@ Resources:
     DeletionPolicy: Delete
     Metadata:
       aws:cdk:path: DeploymentStack/MYSQL/Resource
-  
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: mlflow
     Metadata:
       aws:cdk:path: DeploymentStack/CLUSTER/Resource
-  
   MLflowTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -549,14 +512,12 @@ Resources:
           - Arn
     Metadata:
       aws:cdk:path: DeploymentStack/MLflow/Resource
-  
   MLflowContainerLogGroup:
     Type: AWS::Logs::LogGroup
     UpdateReplacePolicy: Retain
     DeletionPolicy: Retain
     Metadata:
       aws:cdk:path: DeploymentStack/MLflow/Container/LogGroup/Resource
-  
   MLflowExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -569,7 +530,6 @@ Resources:
         Version: "2012-10-17"
     Metadata:
       aws:cdk:path: DeploymentStack/MLflow/ExecutionRole/Resource
-  
   MLflowExecutionRoleDefaultPolicy:
     Type: AWS::IAM::Policy
     Properties:
@@ -604,7 +564,6 @@ Resources:
         - Ref: MLflowExecutionRole
     Metadata:
       aws:cdk:path: DeploymentStack/MLflow/ExecutionRole/DefaultPolicy/Resource
-  
   MLFlowNetworkLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -623,7 +582,6 @@ Resources:
       - VPCPublicSubnet2RouteTableAssociation
     Metadata:
       aws:cdk:path: DeploymentStack/MLFLOW/LB/Resource
-  
   MLFlowLBPublicListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -637,7 +595,6 @@ Resources:
       Protocol: TCP
     Metadata:
       aws:cdk:path: DeploymentStack/MLFLOW/LB/PublicListener/Resource
-  
   MLFlowLBPublicListenerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -648,7 +605,6 @@ Resources:
         Ref: MLFLowVPC
     Metadata:
       aws:cdk:path: DeploymentStack/MLFLOW/LB/PublicListener/ECSGroup/Resource
-  
   MLFlowService:
     Type: AWS::ECS::Service
     Properties:
@@ -683,7 +639,6 @@ Resources:
       - MLFlowLBPublicListener
     Metadata:
       aws:cdk:path: DeploymentStack/MLFLOW/Service/Service
-  
   MLFlowServiceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -705,7 +660,6 @@ Resources:
         Ref: MLFLowVPC
     Metadata:
       aws:cdk:path: DeploymentStack/MLFLOW/Service/SecurityGroup/Resource
-  
   MLFlowServiceTaskCountTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
@@ -732,7 +686,6 @@ Resources:
       ServiceNamespace: ecs
     Metadata:
       aws:cdk:path: DeploymentStack/MLFLOW/Service/TaskCount/Target/Resource
-  
   MLFlowServiceTaskCountAutoscalingPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
@@ -748,7 +701,6 @@ Resources:
         TargetValue: 70
     Metadata:
       aws:cdk:path: DeploymentStack/MLFLOW/Service/TaskCount/Target/AUTOSCALING/Resource
-
 Outputs:
   MLFlowLoadBalancer:
     Value:
