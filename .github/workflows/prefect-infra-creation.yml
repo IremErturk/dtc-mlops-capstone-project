@@ -24,7 +24,7 @@ env:
   service_name: prefect-agent
   PREFECT_VERSION: 2.1.1
 
-jobs:    
+jobs:
   ecr-repo:
     name: Create ECR repo
     runs-on: ubuntu-latest
@@ -96,7 +96,7 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@master
         with:
           name: ${{ env.service_name }}
-          template: infrastructure/templates/ecs_cluster_prefect_agent.yml 
+          template: infrastructure/templates/ecs_cluster_prefect_agent.yml
           capabilities: CAPABILITY_NAMED_IAM
           parameter-overrides: >- # should match with the cloudformation parameters
             cpu=${{ github.event.inputs.cpu }},

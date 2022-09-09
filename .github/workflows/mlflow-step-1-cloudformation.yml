@@ -21,7 +21,7 @@ env:
   DOCKER_PATH: ./experiment_tracking/
   ECR_REPOSITORY: "${{ github.event.inputs.service_name }}"
 
-jobs:    
+jobs:
   ecr-repo:
     name: Create ECR repo
     runs-on: ubuntu-latest
@@ -101,5 +101,5 @@ jobs:
           name: ECS task definition
           path: task-definition.json
 
-      - name: Summary 
+      - name: Summary
         run: echo 'AWS ECS agent successfully deployed and ready to run your flows! :rocket:' >> $GITHUB_STEP_SUMMARY
