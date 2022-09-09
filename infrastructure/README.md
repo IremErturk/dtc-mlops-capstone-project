@@ -10,7 +10,7 @@ Prerequisite Manual Steps:
 Enable the access_key_id and secret_access_key in your terminal and run terraform commands on the terminal as follows.
 
 Caution::: The creation of AWS resources requires resource creations in two different step.
-- Step 1: Create AWS S3 bucket and corresponding resources to setup bucket versioning, encryprition, etc. Use the `bb17213` hash code of
+- Step 1: Create AWS S3 bucket and corresponding resources to setup bucket versioning, encryprition, etc. Use the `bb17213` git commit hash.
 - Step 2: Create remaining resources and also set-up the s3 as terraform backend.
 
 
@@ -33,12 +33,12 @@ terraform apply
 terraform destroy
 ```
 
-### AWS best Practices
+### (optional) AWS best Practices
 Best IAM practices for secure AWS accounts
 - MFA should be enabled on the Root user IAM
 - Root user has no active access keys
 
 
-### Resources
+### Additional Resources
 - **terraform-s3-backend-best-practices**: https://technology.doximity.com/articles/terraform-s3-backend-best-practices
 - **should-terraform-lock-hcl-be-included-in-the-gitignore-file**: https://stackoverflow.com/questions/67963719/should-terraform-lock-hcl-be-included-in-the-gitignore-file
