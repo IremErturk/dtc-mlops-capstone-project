@@ -38,7 +38,7 @@ Parameters:
   ServiceImage:
     Type: String
     Description: Docker image for the service
-    Default: prefecthq/prefect:2.1.1-python3.10 
+    Default: prefecthq/prefect:2.1.1-python3.10
 
 Resources:
   # PrefectFargateCluster:
