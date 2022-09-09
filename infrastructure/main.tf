@@ -40,11 +40,11 @@ module "svc-model-serving" {
   default_azs     = local.default_azs
 }
 
-output "svc-model-serving" {  
+output "svc-model-serving" {
   value = module.svc-model-serving
-}
+} 
 
-# Model Serving Service with ECS and Fargate
+/* # Model Serving Service with ECS and Fargate
 module "svc-experiment-tracking" {
   source          = "./modules/mlflow-service"
   count           = local.ecs-enabled
@@ -54,4 +54,4 @@ module "svc-experiment-tracking" {
 
   artifact_bucket_arn = aws_s3_bucket.artifacts.arn
   artifact_bucket_id  = aws_s3_bucket.artifacts.id
-}
+} */

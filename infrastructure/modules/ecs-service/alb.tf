@@ -8,6 +8,14 @@ resource "aws_alb" "application_load_balancer" {
   load_balancer_type = "application"
   subnets            = var.default_azs
   security_groups    = ["${aws_security_group.load_balancer_security_group.id}"]
+  idle_timeout       = 300 # default:60s
+  
+  # TODO: enable loadbalancer logs
+  /* access_logs {
+    bucket = "${var.logging_bucket_name}"
+    prefix = "${var.service-config.name}-loadbalancer"
+    enabled = true
+  } */
 }
 
 # Load Balancer Security Group
