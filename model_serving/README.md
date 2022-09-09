@@ -1,6 +1,6 @@
 # Model Serving with Fast API
 
-In this module, previously created machine learning model is server as a api. The api expects to receive `baseline:str` as an input and returns an generated poem based on the given baseline. Please keep in mind the model is in beginning state therefore the generetaed poem might not be super impressive :) 
+In this module, previously created machine learning model is server as a api. The api expects to receive `baseline:str` as an input and returns an generated poem based on the given baseline. Please keep in mind the model is in beginning state therefore the generetaed poem might not be super impressive :)
 ## Local Development Web-Service
 
 1. Navigate to `model_serving/web_service` folder
@@ -33,7 +33,7 @@ In this module, previously created machine learning model is server as a api. Th
 ## Cloud Deployment
 
 0. Create required Cloud Resources
-For deploying the fastapi model serving service, the cloud resources should be created by terraform code in `infrastructure` folder. 
+For deploying the fastapi model serving service, the cloud resources should be created by terraform code in `infrastructure` folder.
 If you are not sure how to generate the resources please check the [README](../infrastructure/README.md)
 
 1. Push `Dockerfile` to AWS ECR by using GitHub Action [build-model-serving](../.github/workflows/build-model-serving.yml)
@@ -65,7 +65,7 @@ docker run --env-file .env -p 8000:8000 fastapi-app # with environment variables
     ```bash
     # endpoint_aws: <application_loadbalancer_dns_name>
     # endpoint_local: localhost:8080
-    curl -X 'POST' \                           
+    curl -X 'POST' \  
     'https://<endpoint>/poem/' \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \

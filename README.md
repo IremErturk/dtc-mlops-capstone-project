@@ -1,5 +1,13 @@
-# mlops-capstone-project
-Capstone project for Data Talks MLOps Zoomcamp
+# mlops-capstone-project (poem-generator)
+
+Capstone project for Data Talks MLOps Zoomcamp with aim of practicing automated mlops workflows that works with minimal effort locally and in cloud. The project includes two main capability:
+
+- Fully automated workflow orchestration (with Prefect) for data retrieval and model training tasks.
+- Webs service layer for serving machine learning model with Fast API.
+  
+The final outcome of the project is simplest poem generator api, which returns a ai-created-poem based on the initial prompt given by the end-user.
+
+Addition to the above mentioned two main capabilities, as part of the project, the cloud deployments are automated by the help of different tools sets for infrastrucre as code (terraform, cloudformation, aws cdk) and CI/CD (GitHub Actions).
 
 ## Setting up Development Environment
 
