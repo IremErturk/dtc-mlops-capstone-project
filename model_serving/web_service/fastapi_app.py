@@ -1,5 +1,6 @@
 import os
 from typing import Union
+import logging
 
 import boto3
 from constants import (
@@ -34,6 +35,7 @@ TMP_MODEL_PATH = f"../{MODELS_LOCAL_PATH}/{MODEL_NAME}"
 def init():
     pretrained_weights = "gpt2"
     tokenizer = GPT2TokenizerFast.from_pretrained(pretrained_weights)
+    logger = logging.getLogger(__name__)
 
     # download model from s3 to local model_path
     if os.getenv("environment") != "local":
@@ -41,21 +43,27 @@ def init():
         s3_client.download_file(
             S3_ARTIFACT_BUCKET_NAME, f"{S3_PREFECT_PATH}/{MODELS_PATH}/{MODEL_NAME}", TMP_MODEL_PATH
         )
-    return tokenizer
+    return tokenizer, logger
 
 
-tokenizer = init()
+tokenizer, logger = init()
 
 
 @app.get("/")
 def root():
+    print("Root Endpoint...")
+    logger.warning("Root Endpoint...")
     return {"Hello": "Welcome to the Poetry Generator"}
 
 
 @app.post("/poem/")
 def create_item(poem_features: PoemFeatures):
+    print("Create Poem Endpoint...")
+    logger.warning("Create Poem Endpoint...")
     created_poem = create_poem(baseline=poem_features.baseline)
+    logger.warning(f"Create Poem task is completed with: {type(created_poem)}, {create_poem}")
     out = {"poem": created_poem}
+    logger.warning(f"The api response create-poem with: {type(out)}, {out}")
     return out
 
 @app.post("/poem2/")
@@ -71,10 +79,13 @@ def create_poem(baseline: str):
     # learn = load_learner(learn_path)
     # preds = learn.model.generate(inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True)
     model = trch.load(TMP_MODEL_PATH)
+    print("Model is loaded from local")
+    logger.warning(f"Model is loaded from local {type(model)}")
     preds = model.generate(
         inp, max_length=60, num_beams=5, no_repeat_ngram_size=2, early_stopping=True
     )
-
+    print("Predictions are generated")
+    logger.warning(f"Predictions are generated {type(preds)}")
     return tokenizer.decode(preds[0].numpy(), skip_special_tokens=True)
 
 
