@@ -1,7 +1,7 @@
 resource "random_password" "mlflow_backend_store" {
   length  = 16
   special = false
-  
+
   # Added this because random password was generating a password that had chars that
   # aurora didnt allow. With the lifecycle this shouldnt impact existing passwords that
   # happened to generate ok.

@@ -30,7 +30,7 @@ resource "aws_ecs_cluster" "cluster" {
   name = var.project-name
 }
 
-# Model Serving Service 
+# Model Serving Service
 module "svc-model-serving" {
   source          = "./modules/ecs-service"
   count           = local.ecs-enabled
@@ -42,4 +42,4 @@ module "svc-model-serving" {
 
 output "svc-model-serving" {
   value = module.svc-model-serving
-} 
+}
