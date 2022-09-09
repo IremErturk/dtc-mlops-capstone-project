@@ -9,7 +9,7 @@ resource "aws_alb" "application_load_balancer" {
   subnets            = var.default_azs
   security_groups    = ["${aws_security_group.load_balancer_security_group.id}"]
   idle_timeout       = 300 # default:60s
-  
+
   # TODO: enable loadbalancer logs
   /* access_logs {
     bucket = "${var.logging_bucket_name}"

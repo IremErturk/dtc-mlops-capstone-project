@@ -21,9 +21,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# TODO: task_execution_role should contain AllowRetrievingSecretsFromParameterStore
-
-
 ## ecs_task_role: that allows your Amazon ECS container task to make calls to other AWS services.
 resource "aws_iam_role" "ecs_task_role" {
   name               = "${var.service-config.name}-ecs_task_role"

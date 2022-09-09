@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "task" {
             "awslogs-region": "eu-central-1",
             "awslogs-stream-prefix": "${var.service-config.name}"
           }
-      } 
+      }
     }
   ]
   DEFINITION
@@ -35,7 +35,6 @@ resource "aws_ecs_task_definition" "task" {
   depends_on = [aws_ecr_repository.repository, aws_iam_role.ecs_task_execution_role]
 
 }
-
 
 resource "aws_ecs_service" "service" {
   name            = var.service-config.name
