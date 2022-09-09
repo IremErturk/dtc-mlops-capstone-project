@@ -1,6 +1,4 @@
 locals{
-
-    /* project-name = "mlops-zoomcamp-capstone" */
     state-bucket-name = "${var.project-name}-terraform-state"
     state-bucket-kms-alias = "alias/terraform-bucket-key"
     dynamodb-state-lock-table="terraform-state"
@@ -22,6 +20,8 @@ locals{
                           svc_desired_count = 2
                         }
 
+    /* TODO: Both mlflow-service and prefect-service modules are is incomplete state */
+    /* The required resources for prefect-agent service is created with cloudformation template  */
     /* svc-experiment-tracking = { name = "mlflow-server",
                                 host_port = 5000,
                                 container_port = 5000,
