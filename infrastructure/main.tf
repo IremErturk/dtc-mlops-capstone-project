@@ -40,6 +40,14 @@ module "svc-model-serving" {
   default_azs     = local.default_azs
 }
 
-output "svc-model-serving" {
-  value = module.svc-model-serving
+# Prefect Workflow Orchestration Agent
+/* Prerequsite:
+  aws ssm put-parameter --type SecureString --name PREFECT_API_URL --value <PREFECT_API_URL> --overwrite
+  aws ssm put-parameter --type SecureString --name PREFECT_API_KEY --value <PREFECT_API_KEY> --overwrite
+*/
+module "svc_prefect_agent" {
+  source          = "./modules/prefect-service"
+  count           = 0
+
+  cluster_name    = aws_ecs_cluster.cluster[count.index].id
 }
