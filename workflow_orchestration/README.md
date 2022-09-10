@@ -2,11 +2,11 @@
 
 In this module Prefect is used to orchestrate two flows in our MLOps setup.
 
-**datalake_flow**:  Downloads data from kaggle dataset and store the raw data.
+- **datalake_flow**:  Downloads data from kaggle dataset and store the raw data.
 
-**model_flow**: Reads raw data and apply tokenization and model traing techniques and store the model.
+- **model_flow**: Reads raw data and apply tokenization and model traing techniques and store the model.
 
-For both of the flows, storage option selected by the `environment` variable defined in the `.env` file. If the we are testing the flows locally (where `environment=local`) datalake and model flows will store outputs in `artifacts/raw_data` and `artifacts/models` folders. Otherwise, the outputs will be stored in S3 bucket.
+For both of the flows, storage option selected by the `environment` variable defined in the `.env` file under the  `workflow_orchestration` folder. If the flows are runned locally (where `environment=local`) datalake and model flows will store outputs in `artifacts/raw_data` and `artifacts/models` folders. Otherwise, the outputs will be stored in artifacts S3 bucket.
 
 ----
 
@@ -57,8 +57,16 @@ For both of the flows, storage option selected by the `environment` variable def
     # Run the flow standalone
     python <flow-name>.py
     ```
+---
+## Cloud Development
 
-6. Set Deployments from terminal in Prefect Cloud
+1. Ensure that the common cloud resources are created as described in [infrastructure/README](../infrastructure/README.md) 
+   to create common resources such as artifact bucket.
+2. Create Prefect Cloud Resources
+    For deploying the prefect-agent in AWS resources, the cloud resources should be created by cloudformation template `infrastructure/templates/ecs_cluster_prefect_agent.yml` file. The creation of prefect specific resources is automated with the GitHub Actions workflow [`cloudformation-deploy-prefect-agent.yml`](../.github/workflows/loudformation-deploy-prefect-agent.yml). The workflow needs to be triggered manually by GitHub Actions UI.
+    - Requirement: Ensure you have set your Github repository secrets as described [here](https://docs.github.com/en/codespaces/managing-codespaces-for-your-organization/managing-encrypted-secrets-for-your-repository-and-organization-for-github-codespaces) fo all mentioned environment variables in local development section.
+3. Create Prefect Deployments from flows
+    By `workflow-deployment-prefect.yml` create the deployments in the prefect-agent and run the workflows in aws-powered agent. The pipeline might fail on step `Deploy flows to S3` therefore if you encounter such a problem you can run the flow by following commands
    
     ```bash
     # Configure terminal to Prefect Cloud
@@ -84,16 +92,6 @@ For both of the flows, storage option selected by the `environment` variable def
             --storage-block s3/deployments \
             --output model_flow.yaml
     ```
----
-## Cloud Development
-
-1. Create common Cloud Resources.
-    Please ensure to follow instructions in infrastructure/README to create common resources such as artifact bucket.
-2. Create Prefect Cloud Resources
-    For deploying the prefect-agent in AWS resources, the cloud resources should be created by cloudformation template `infrastructure/templates/ecs_cluster_prefect_agent.yml` file. The creation of prefect specific resources is automated with the GitHub Actions workflow [`cloudformation-deploy-prefect-agent.yml`](../.github/workflows/loudformation-deploy-prefect-agent.yml). The workflow needs to be triggered manually by GitHub Actions UI.
-    - Requirement: Ensure you have set your Github repository secrets as described [here](https://docs.github.com/en/codespaces/managing-codespaces-for-your-organization/managing-encrypted-secrets-for-your-repository-and-organization-for-github-codespaces fo all mentioned environment variables in local development section.
-3. Create Prefect Deployments from flows
-    By `workflow-deployment-prefect.yml` create the deployments in the prefect-agent and run the workflows in aws-powered agent. The pipeline might fail on step `Deploy flows to S3` therefore if you encounter such a problem you can run the flow by following commands
 
 
 ---

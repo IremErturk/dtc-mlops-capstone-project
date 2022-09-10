@@ -9,8 +9,43 @@ The final outcome of the project is simplest poem generator api, which returns a
 
 Addition to the above mentioned two main capabilities, as part of the project, the cloud deployments are automated by the help of different tools sets for infrastrucre as code (terraform, cloudformation, aws cdk) and CI/CD (GitHub Actions).
 
-## Setting up Development Environment
+---
+## Where to Start
+---
 
+### Required Accounts & Access Keys  
+
+Hereby, required accounts and respective keys will be listed. 
+- AWS Console Account and required secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. Instructions for [retrieving access_key and access_key_id](./infrastructure/README.md)
+- Kaggle Account and required secrets `KAGGLE_USERNAME` and `KAGGLE_KEY`. Instructions for [finding the **Kaggle** username and key](https://www.kaggle.com/general/51898) 
+- Prefect Cloud Accont and required secrets `PREFECT_API_URL` and  `PREFECT_API_KEY` .Instructions for [creating Cloud Prefect account](https://app.prefect.cloud/) and [finding **Prefect** api_url and api_key](https://docs.prefect.io/ui/cloud-getting-started/)
+
+Caution:: It is highly suggested to collect these parameters in `.env` file and `GitHub Secrets` for each of them as a preparation step.
+
+---
+### General Overview 
+
+Infrastructure Creation ([infrastructure](./infrastructure/README.md))
+1. Create AWS resources (ECS cluster and fastapi-app service) by following the instructions in `infrastructure` folder.
+2. Create AWS resources for prefect-agent via Cloudformation.
+
+Running Data Ingestion and Model Creation flows ([workfflow_orchestration](./workflow_orchestration/README.md))
+1. Run the datalake_flow as local flow or a deployment in aws 
+   1. The outcome of the flow is stored raw data in artifacts/raw_data folder.
+2. Run the model_flow as local flow or a deployment in aws
+   1. The outcmode of the flow is stored model file in artifacts/model folder.
+
+Serving the Model as an FastAPI endpoint ([model_serving](./model_serving/README.md))
+1. Run the `build-and-ecr-push-model-serving.yml` GitHub workflow for publishing the `fastapi-app` image in ECR.
+2. In that state, all of the building blocks of the project is created successfully. Therefore you can go an check the fastapi-app 
+   and make a POST request on `/poem` endpoint.
+
+
+
+
+---
+## Setting up Development Environment
+---
 ### Python Package Management with Poetry
 
 Poetry is Python Package Management tool that helps managing package dependencies.
@@ -31,7 +66,7 @@ Poetry is Python Package Management tool that helps managing package dependencie
     ```bash
     poetry add <package-name><condition><version>
     ```
-
+---
 ### Pre-Commit Hooks
 
 Pre-Commit allows to run hooks on every commit automatically to point out issues such as missing semicolons, trailing whitespaces, etc.
