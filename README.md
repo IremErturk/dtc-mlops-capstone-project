@@ -9,6 +9,10 @@ The final outcome of the project is simplest poem generator api, which returns a
 
 Addition to the above mentioned two main capabilities, as part of the project, the cloud deployments are automated by the help of different tools sets for infrastrucre as code (terraform, cloudformation, aws cdk) and CI/CD (GitHub Actions).
 
+
+![Architecture Diagram](architecture-diagram-v2.png "Architecture Diagram")
+
+
 ---
 ## Where to Start
 ---
