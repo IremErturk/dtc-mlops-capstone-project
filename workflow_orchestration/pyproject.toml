@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "capstone-orchestration-module"
+name = "workflow-orchestration-module"
 version = "0.1.0"
 description = "Capstone project Orchestration Module MLOps Zoomcamp"
 authors = ["Irem Erturk <irem.erturk@xxx.com>"]
@@ -19,7 +19,7 @@ torchvision = "^0.13.1"
 mlflow = "^1.28.0"
 python-dotenv = "^0.21.0"
 s3fs = "^2022.8.2"
-boto3 = "^1.24"
+#boto3 = "^1.24"
 
 [tool.poetry.dev-dependencies]
 greenlet = "^1.1.2"
