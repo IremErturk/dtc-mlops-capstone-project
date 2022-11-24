@@ -92,3 +92,27 @@ Pre-Commit allows to run hooks on every commit automatically to point out issues
     ```bash
         pre-commit run --all-files
     ```
+
+## WIP: Docker-Compose and Creating Dev
+
+1. colima start
+2. docker-compose --env-file example.env up --build
+
+-> Up and running prefect_agent, fast_api_app, 
+
+MYSQL_SERVER (running where?)
+MLFLOW http://0.0.0.0:5000 (local)
+
+MINIO_OBJECT_STORAGE_SERVER
+- Console http://localhost:9001/login
+- API http://localhost:9000
+
+BASH_CREATE_BUCKETS
+
+FASTAPI http://0.0.0.0:8000/docs#/ (local)
+PREFECT_AGENT (running on prefect server)
+
+
+Missing Part is that prefect_cli !!! (Due to profile definition…)
+3. docker-compose --env-file example.env run prefect_cli
+By this you can bash into the flows

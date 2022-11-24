@@ -11,10 +11,13 @@ RUN python -m pip install --upgrade pip
 
 RUN mkdir -p /opt/workflow_orchestration/repo
 
-COPY flows/ /opt/web_service/repo/flows/
-COPY pyproject.toml poetry.toml poetry.lock /opt/workflow_orchestration/repo/
+COPY flows/ /opt/workflow_orchestration/repo/flows/
+COPY pyproject.toml poetry.toml poetry.lock constants.py /opt/workflow_orchestration/repo/
 
 WORKDIR /opt/workflow_orchestration/repo
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_DEFAULT_TIMEOUT=100
 
 RUN curl -sSL https://install.python-poetry.org | python3 - && \
   export PATH=$PATH:$HOME/.local/bin && \
@@ -23,9 +26,6 @@ RUN curl -sSL https://install.python-poetry.org | python3 - && \
 
 ENV PATH=/opt/workflow_orchestration/repo/.venv/bin:$PATH
 
-ENV PYTHONUNBUFFERED 1
 # WORKDIR /opt/workflow_orchestration/repo
 RUN mkdir -p ../../artifacts/raw_data
 RUN mkdir -p ../../artifacts/models
-
-CMD ["prefect", "agent", "start" , "-q", "workflows"]

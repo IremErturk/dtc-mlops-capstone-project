@@ -3,15 +3,15 @@ import os
 from typing import List
 
 import boto3
-from constants import (
-    MODEL_NAME,
-    MODELS_LOCAL_PATH,
-    MODELS_S3_PATH,
-    RAW_DATA_LOCAL_PATH,
-    RAW_DATA_PATH,
-    S3_ARTIFACT_BUCKET_NAME,
-    S3_PREFECT_PATH,
-)
+# from constants import (
+#     MODEL_NAME,
+#     MODELS_LOCAL_PATH,
+#     MODELS_S3_PATH,
+#     RAW_DATA_LOCAL_PATH,
+#     RAW_DATA_PATH,
+#     S3_ARTIFACT_BUCKET_NAME,
+#     S3_PREFECT_PATH,
+# )
 from dotenv import load_dotenv
 from fastai.text.all import (
     Callback,
@@ -32,6 +32,24 @@ from prefect_shell import shell_run_command
 from transformers import GPT2LMHeadModel, GPT2TokenizerFast
 
 load_dotenv()
+
+KAGGLE_DATASET_OWNER = "michaelarman"
+KAGGLE_DATASET_NAME = "poemsdataset"
+
+LOCAL_ROOT_PATH = ".."
+S3_ARTIFACT_BUCKET_NAME = "mlops-zoomcamp-capstone-artifacts"
+
+S3_PREFECT_PATH = "prefect-artifacts"
+LOCAL_ARTIFACT_PATH = "artifacts"
+
+RAW_DATA_PATH = "raw_data/poems"
+MODELS_PATH = "models"
+MODEL_NAME = "gtp2-model.pt"
+
+RAW_DATA_S3_PATH = f"{S3_ARTIFACT_BUCKET_NAME}/{S3_PREFECT_PATH}/{RAW_DATA_PATH}"
+RAW_DATA_LOCAL_PATH = f"{LOCAL_ROOT_PATH}/{LOCAL_ARTIFACT_PATH}/{RAW_DATA_PATH}"
+MODELS_S3_PATH = f"{S3_ARTIFACT_BUCKET_NAME}/{S3_PREFECT_PATH}/{MODELS_PATH}"
+MODELS_LOCAL_PATH = f"{LOCAL_ROOT_PATH}/{LOCAL_ARTIFACT_PATH}/{MODELS_PATH}"
 
 
 class TransformersTokenizer(Transform):
@@ -154,4 +172,5 @@ def model_flow():
         upload_folder_to_s3(model_path=MODELS_LOCAL_PATH, bucket_path=MODELS_S3_PATH)
 
 
-model_flow()
+if __name__ == "__main__":
+    model_flow()
